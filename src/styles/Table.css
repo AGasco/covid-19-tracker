@@ -1,0 +1,45 @@
+.table {
+    margin-top: 20px;
+    height: 400px;
+    overflow: scroll;
+    overflow-x: hidden;
+    color: #6a5d5d;
+    background-color: white;
+}
+
+.table__country, .table__cases {
+    padding: 0.5rem;
+}
+
+.table__cases {
+    text-align: right;
+}
+
+.table tr {
+    display: flex;
+    justify-content: space-between;
+}
+
+.table tr:nth-of-type(odd) {
+    background-color: #f3f2f8;
+}
+
+/* STYLING OF THE SCROLLBAR */
+
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(54, 56, 58);
+}
