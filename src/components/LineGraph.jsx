@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
+import { connect } from "react-redux";
 
 const options = {
   legend: {
@@ -67,7 +68,7 @@ const caseTypeTitles = {
   deaths: "Worldwide Deaths Per Day",
 };
 
-function LineGraph({ casesType = "cases" }) {
+function LineGraph({ casesType }) {
   const [data, setData] = useState({});
 
   const buildChartData = (data, casesType = "cases") => {
@@ -122,4 +123,10 @@ function LineGraph({ casesType = "cases" }) {
   );
 }
 
-export default LineGraph;
+const mapStateToProps = (state) => {
+  return {
+    casesType: state.misc.currType,
+  };
+};
+
+export default connect(mapStateToProps)(LineGraph);

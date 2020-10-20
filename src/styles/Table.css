@@ -7,6 +7,10 @@
     background-color: white;
 }
 
+.table>table {
+    width: 100%;
+}
+
 .table__country, .table__cases {
     padding: 0.5rem;
 }
