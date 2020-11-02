@@ -1,84 +1,56 @@
 import React, { useEffect } from "react";
 import { MenuItem, FormControl, Select } from "@material-ui/core";
+import { fetchCurrCountryData } from "./../redux/actions/fetchActions";
+import { updateMapData } from "../redux/actions/countriesActions";
+import { defaultMapCenter } from "./../utilities";
+import { connect } from "react-redux";
 
 const Header = ({
-  countries,
   currCountry,
-  defaultMapCenter,
-  setCountries,
-  setCurrCountry,
-  setCountryInfo,
-  setTableData,
-  setMapCenter,
-  setMapZoom,
-  setMapCountries,
+  countries,
+  fetchCurrCountry,
+  updateMapData,
 }) => {
+  // useEffect(() => {
+  //   console.log("currCountry", currCountry);
+  // }, [currCountry]);
+
   useEffect(() => {
-    fetch("https://disease.sh/v3/covid-19/all")
-      .then((response) => response.json())
-      .then((data) => {
-        setCountryInfo(data);
-      });
-  }, [setCountryInfo]);
+    const mapCoords = currCountry.country
+      ? { lat: currCountry.countryInfo.lat, lng: currCountry.countryInfo.long }
+      : defaultMapCenter;
+    const mapZoom = currCountry.country ? 4 : 3;
+    updateMapData(mapCoords, mapZoom);
+  }, [currCountry, updateMapData]);
 
-  //REACT HOOK
-  useEffect(() => {
-    //async -> send a request to a server, wait for it, do something with the data
-    const getCountriesData = async () => {
-      await fetch("https://disease.sh/v3/covid-19/countries")
-        .then((response) => response.json())
-        .then((data) => {
-          const countries = data.map((country) => ({
-            name: country.country,
-            value: country.countryInfo.iso2,
-          }));
-
-          setCountries(countries);
-          setTableData(data);
-          setMapCountries(data);
-        });
-    };
-
-    getCountriesData();
-  }, [setCountries, setTableData, setMapCountries]);
-
-  const onCountryChange = async (e) => {
+  const onCountryChange = (e) => {
+    console.log("changing country");
     const countryCode = e.target.value;
-
     const url =
       countryCode === "worldwide"
         ? "https://disease.sh/v3/covid-19/all"
         : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
-
-    await fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setCurrCountry(countryCode);
-        setCountryInfo(data);
-        setMapCenter(
-          countryCode === "worldwide"
-            ? defaultMapCenter
-            : [data.countryInfo.lat, data.countryInfo.long]
-        );
-        setMapZoom(countryCode === "worldwide" ? 3 : 4);
-      });
+    fetchCurrCountry(url);
   };
 
   return (
     <div className="app__header">
-      <h1>COVID-19 Tracker</h1>
+      <h1>REACT-REDUX COVID-19 TRACKER</h1>
       <FormControl className="app__dropdown">
         <Select
           variant="outlined"
-          value={currCountry}
-          onChange={onCountryChange}
+          value={currCountry.country ? currCountry.country : "worldwide"}
+          onChange={(e) => onCountryChange(e)}
         >
           <MenuItem key="worldwide" value="worldwide">
             Worldwide
           </MenuItem>
-          {countries.map((country) => (
-            <MenuItem key={country.name} value={country.value}>
-              {country.name}
+          {countries.countries?.map((country) => (
+            <MenuItem
+              key={country.country ? country.country : "worldwide"}
+              value={country.country ? country.country : "worldwide"}
+            >
+              {country.country}
             </MenuItem>
           ))}
         </Select>
@@ -87,4 +59,16 @@ const Header = ({
   );
 };
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    currCountry: state.countries.currCountry,
+    countries: state.countries.countries,
+  };
+};
+
+const mapDispatchToProps = {
+  fetchCurrCountry: fetchCurrCountryData,
+  updateMapData: updateMapData,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -1,15 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./components/Header";
 import InfoBox from "./components/InfoBox";
 import Map from "./components/Map";
 import Table from "./components/Table";
 import LineGraph from "./components/LineGraph";
 import { Card, CardContent } from "@material-ui/core";
+import { defaultMapCenter } from "./utilities";
+import { connect } from "react-redux";
+import {
+  fetchWorldwideData,
+  fetchCountriesData,
+} from "./redux/actions/fetchActions";
 import "./App.css";
 import "leaflet/dist/leaflet.css";
 
-const defaultMapCenter = { lat: 34.80746, lng: -40.4796 };
+function App({
+  currCountry,
+  currType,
+  fetchWorldwideData,
+  fetchCountriesData,
+}) {
+  //////////////////////////////
 
+<<<<<<< HEAD
 //JUST A COMMENT TO TEST GIT
 
 function App() {
@@ -21,32 +34,27 @@ function App() {
   const [mapZoom, setMapZoom] = useState(3);
   const [mapCountries, setMapCountries] = useState([]);
   const [currType, setCurrType] = useState("cases");
+=======
+  //Fetching worldwide and countries data on init
+  useEffect(() => {
+    fetchWorldwideData();
+    fetchCountriesData();
+  }, [fetchWorldwideData, fetchCountriesData]);
+>>>>>>> 89099f3759c608f330a13fa261b00f841b07f13b
 
   return (
     <div className="app">
       <div className="app__left">
         {/* HEADER */}
-        <Header
-          countries={countries}
-          currCountry={currCountry}
-          defaultMapCenter={defaultMapCenter}
-          setCountries={setCountries}
-          setCurrCountry={setCurrCountry}
-          setCountryInfo={setCountryInfo}
-          setTableData={setTableData}
-          setMapCenter={setMapCenter}
-          setMapZoom={setMapZoom}
-          setMapCountries={setMapCountries}
-        />
+        <Header />
         {/* InfoBoxes */}
         <div className="app__stats">
           {/* InfoBox title="cases" */}
           <InfoBox
             title="Coronavirus Cases"
-            cases={countryInfo.todayCases}
-            total={countryInfo.cases}
+            cases={currCountry?.todayCases}
+            total={currCountry?.cases}
             type="cases"
-            setCurrType={setCurrType}
             style={
               currType === "cases"
                 ? {
@@ -60,10 +68,9 @@ function App() {
           {/* InfoBox title="recovered" */}
           <InfoBox
             title="Recovered"
-            cases={countryInfo.todayRecovered}
-            total={countryInfo.recovered}
+            cases={currCountry?.todayRecovered}
+            total={currCountry?.recovered}
             type="recovered"
-            setCurrType={setCurrType}
             style={
               currType === "recovered"
                 ? {
@@ -77,10 +84,9 @@ function App() {
           {/* InfoBox title="deaths" */}
           <InfoBox
             title="Deaths"
-            cases={countryInfo.todayDeaths}
-            total={countryInfo.deaths}
+            cases={currCountry?.todayDeaths}
+            total={currCountry?.deaths}
             type="deaths"
-            setCurrType={setCurrType}
             style={
               currType === "deaths"
                 ? {
@@ -94,12 +100,7 @@ function App() {
         </div>
 
         {/* Map */}
-        <Map
-          countries={mapCountries}
-          casesType={currType}
-          center={mapCenter}
-          zoom={mapZoom}
-        />
+        <Map />
       </div>
 
       <div className="app__right">
@@ -107,9 +108,9 @@ function App() {
           <CardContent>
             <h3>Live Cases By Country</h3>
             {/* Table */}
-            <Table countries={tableData} />
+            <Table />
             {/* Graph */}
-            <LineGraph casesType={currType} />
+            <LineGraph />
           </CardContent>
         </Card>
       </div>
@@ -117,4 +118,16 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    currCountry: state.countries.currCountry,
+    currType: state.misc.currType,
+  };
+};
+
+const mapDispatchToProps = {
+  fetchWorldwideData: fetchWorldwideData,
+  fetchCountriesData: fetchCountriesData,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,6 +1,8 @@
 import React from "react";
 import { Card, CardContent, Typography } from "@material-ui/core";
 import numeral from "numeral";
+import { updateType } from "./../redux/actions/miscActions";
+import { connect } from "react-redux";
 
 function InfoBox({
   title,
@@ -9,14 +11,14 @@ function InfoBox({
   type,
   style,
   casesColor,
-  setCurrType,
+  updateCurrType,
 }) {
   return (
     <Card
       className="infobox"
       style={style}
       onClick={() => {
-        setCurrType(type);
+        updateCurrType(type);
       }}
     >
       <CardContent className="infoBox__cardContent">
@@ -26,7 +28,11 @@ function InfoBox({
         </Typography>
 
         {/* No of cases */}
-        <Typography className="infoBox__cases" color="textSecondary">
+        <Typography
+          component={"div"}
+          className="infoBox__cases"
+          color="textSecondary"
+        >
           <h2 style={{ color: casesColor }}>
             +
             {cases >= 1000
@@ -44,4 +50,8 @@ function InfoBox({
   );
 }
 
-export default InfoBox;
+const mapDispatchToProps = {
+  updateCurrType: updateType,
+};
+
+export default connect(null, mapDispatchToProps)(InfoBox);
