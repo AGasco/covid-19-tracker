@@ -10,6 +10,8 @@ import "leaflet/dist/leaflet.css";
 
 const defaultMapCenter = { lat: 34.80746, lng: -40.4796 };
 
+//JUST A COMMENT TO TEST GIT
+
 function App() {
   const [countries, setCountries] = useState([]); //REACT HOOK
   const [currCountry, setCurrCountry] = useState("worldwide");
