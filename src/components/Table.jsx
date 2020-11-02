@@ -8,9 +8,8 @@ function Table({ countries }) {
 
   useEffect(() => {
     if (countries?.countries?.length > 0) {
-      setSorted(
-        countries.countries.sort((a, b) => (a.cases >= b.cases ? -1 : 1))
-      );
+      const currCountries = [...countries.countries];
+      setSorted(currCountries.sort((a, b) => (a.cases >= b.cases ? -1 : 1)));
     }
   }, [countries]);
 

@@ -26,7 +26,8 @@ const casesTypeColors = {
 function Map({ countries, casesType, mapData }) {
   // useEffect(() => {
   //   console.log(mapData);
-  // }, [mapData]);
+  //   console.log("countries", countries);
+  // }, [mapData, countries]);
 
   //JUST SPACE MY MAN
   const displayCircles = (casesType = "cases") => {

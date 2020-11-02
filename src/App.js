@@ -20,28 +20,10 @@ function App({
   fetchWorldwideData,
   fetchCountriesData,
 }) {
-  //////////////////////////////
-
-<<<<<<< HEAD
-//JUST A COMMENT TO TEST GIT
-
-function App() {
-  const [countries, setCountries] = useState([]); //REACT HOOK
-  const [currCountry, setCurrCountry] = useState("worldwide");
-  const [countryInfo, setCountryInfo] = useState({});
-  const [tableData, setTableData] = useState({});
-  const [mapCenter, setMapCenter] = useState(defaultMapCenter);
-  const [mapZoom, setMapZoom] = useState(3);
-  const [mapCountries, setMapCountries] = useState([]);
-  const [currType, setCurrType] = useState("cases");
-=======
-  //Fetching worldwide and countries data on init
   useEffect(() => {
     fetchWorldwideData();
     fetchCountriesData();
   }, [fetchWorldwideData, fetchCountriesData]);
->>>>>>> 89099f3759c608f330a13fa261b00f841b07f13b
-
   return (
     <div className="app">
       <div className="app__left">
